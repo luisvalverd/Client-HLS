@@ -1,10 +1,9 @@
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
-import Navbar from "../../components/navbar";
 
 const Search: NextPage = () => {
   const router = useRouter();
-  const { query_search } = router.query;
+  const query_search = router.query.query_search.replace("-", " ");
 
   if (query_search === "") {
     router.push("/");
@@ -12,7 +11,6 @@ const Search: NextPage = () => {
 
   return (
     <div>
-      <Navbar></Navbar>
       <div>
         <p>result for:{query_search}</p>
       </div>

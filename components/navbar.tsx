@@ -1,17 +1,15 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "../styles/Navbar.module.css";
 import Link from "next/link";
 import { useRouter } from "next/router";
-
-
 
 const Navbar: React.FC = () => {
   const [valueSearch, setValueSearch] = useState<any>();
   const router = useRouter();
 
   const search = (value: string) => {
-    let query = value.replace(" ", "-");
-    router.push(`/search?query_search=${query}`);
+    let query = value;
+    router.push(`/search?query_search=${query.replace(" ", "-")}`);
   }
 
   const handleSearch = (event: any) => {
@@ -30,12 +28,14 @@ const Navbar: React.FC = () => {
           onChange={handleSearch}
           value={valueSearch}
         />
-        <button onClick={() => { 
-          console.log("valueSearch");
-          if(valueSearch !== undefined) {
-            search(valueSearch) 
-          }
-        }}>Search</button>
+        <button
+          onClick={() => {
+            if (valueSearch !== undefined) {
+              search(valueSearch)
+            }
+          }}
+          id="btn_search"
+        >Search</button>
       </div>
       <div>
         <a href="#">User</a>
