@@ -1,9 +1,17 @@
-import type { NextPage } from 'next'
+import type { NextPage, NextPageContext } from 'next'
 import Image from 'next/image'
 import styles from '../styles/Home.module.css'
 import Navbar from "../components/navbar";
+import { useEffect } from "react";
+
+//redux
+import { fetchAllVideos } from "../store/slices/videos";
+import { useDispatch, useSelector } from "react-redux";
+
+// TODO make use dispatch before load page and get all videos
 
 const Home: NextPage = () => {
+
   return (
     <div className={styles.container}>
 
@@ -11,6 +19,10 @@ const Home: NextPage = () => {
         <h1 className={styles.title}>
           Welcome to <a href="#">VodTube!</a>
         </h1>
+        <div>
+          <ul>
+          </ul>
+        </div>
       </main>
 
       <footer className={styles.footer}>

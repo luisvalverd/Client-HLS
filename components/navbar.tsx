@@ -1,14 +1,26 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styles from "../styles/Navbar.module.css";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
+// redux
+import { fetchFindVideos } from "../store/slices/videos";
+import { useDispatch } from "react-redux";
+
 const Navbar: React.FC = () => {
   const [valueSearch, setValueSearch] = useState<any>();
   const router = useRouter();
+  const dispatch = useDispatch();
+
+  const pressEnter = (event: any) => {
+    if (event.key === "Enter") {
+      search(valueSearch)
+    }
+  }
 
   const search = (value: string) => {
     let query = value;
+    dispatch(fetchFindVideos({ name: valueSearch, page: "1" }));
     router.push(`/search?query_search=${query.replace(" ", "-")}`);
   }
 
@@ -27,6 +39,7 @@ const Navbar: React.FC = () => {
           placeholder="Search..."
           onChange={handleSearch}
           value={valueSearch}
+          onKeyPress={pressEnter}
         />
         <button
           onClick={() => {
