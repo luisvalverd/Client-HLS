@@ -1,16 +1,39 @@
-import type { NextPage, NextPageContext } from 'next'
+import type { NextPage } from 'next'
+import { useRouter } from "next/router";
 import Image from 'next/image'
 import styles from '../styles/Home.module.css'
-import Navbar from "../components/navbar";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
-//redux
+// redux
+import { useDispatch } from "react-redux";
 import { fetchAllVideos } from "../store/slices/videos";
-import { useDispatch, useSelector } from "react-redux";
+
+// components
+import Results from '../components/results_videos';
 
 // TODO make use dispatch before load page and get all videos
 
 const Home: NextPage = () => {
+  const [videosData, setVideosData] = useState({
+    actualPage: 1,
+    totalPage: 1,
+    videos: []
+  });
+
+  const router = useRouter();
+  const dispatch = useDispatch();
+
+  const getAllVideos = () => {
+    dispatch(fetchAllVideos());
+    router.push("/allVideos")
+  }
+
+  useEffect(() => {
+    axios.get("http://localhost:8000/all-videos")
+      .then((response) => setVideosData({ ...response.data }))
+      .catch((error) => console.log(error));
+  }, [])
 
   return (
     <div className={styles.container}>
@@ -20,8 +43,10 @@ const Home: NextPage = () => {
           Welcome to <a href="#">VodTube!</a>
         </h1>
         <div>
-          <ul>
-          </ul>
+          <Results videos={videosData?.videos}></Results>
+        </div>
+        <div>
+          <button onClick={() => getAllVideos()}>Show all Videos</button>
         </div>
       </main>
 

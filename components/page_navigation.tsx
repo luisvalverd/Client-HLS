@@ -1,13 +1,14 @@
 import React from "react";
 
 // redux 
-import { fetchFindVideos } from "../store/slices/videos";
+import { fetchFindVideos, fetchAllVideos } from "../store/slices/videos";
 import { useDispatch } from "react-redux";
 
 interface Props {
   actualPage: number;
   lastPage: number;
   search_query: string;
+  allVideos?: boolean;
 }
 
 const PageNavigation: React.FC<Props> = (props: Props) => {
@@ -15,11 +16,19 @@ const PageNavigation: React.FC<Props> = (props: Props) => {
   const dispatch = useDispatch();
   //change page
   const nextPage = () => {
-    dispatch(fetchFindVideos({ name: props.search_query, page: props.actualPage + 1 }))
+    if (!props.allVideos) {
+      dispatch(fetchFindVideos({ name: props.search_query, page: props.actualPage + 1 }))
+    } else {
+      dispatch(fetchAllVideos(props.actualPage + 1));
+    }
   }
 
   const lastPage = () => {
-    dispatch(fetchFindVideos({ name: props.search_query, page: props.actualPage - 1 }))
+    if (!props.allVideos) {
+      dispatch(fetchFindVideos({ name: props.search_query, page: props.actualPage - 1 }))
+    } else {
+      dispatch(fetchAllVideos(props.actualPage - 1));
+    }
   }
 
   // validate if need next or last btn to change page

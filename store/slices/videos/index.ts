@@ -9,17 +9,23 @@ import axios from "axios";
 
 var URI = `http://localhost:8000`;
 
-export const fetchAllVideos: any = createAsyncThunk("videos/fetchAllVideos", async () => {
-  try {
-    const response = await axios.get(URI + "/all-videos");
-    return [...response.data];
-  } catch (error: any) {
-    return error.message;
-  }
-});
+export const fetchAllVideos: any = createAsyncThunk("videos/fetchAllVideos",
+  async (page: string) => {
+    try {
+
+      if (!page) {
+        page = "1";
+      }
+
+      const response = await axios.get(URI + `/all-videos?page=${page}`);
+      return { ...response.data };
+    } catch (error: any) {
+      return error.message;
+    }
+  });
 
 interface FindVideosData {
-  name: string;
+  name?: string;
   page: string;
 }
 
@@ -35,7 +41,7 @@ export const fetchFindVideos: any = createAsyncThunk("videos/fetchFindVideos",
       const response = await axios.post(URI + `/videos?page=${data.page}`, {
         search_value: data.name
       })
-      return {...response.data};
+      return { ...response.data };
     } catch (error: any) {
       return error.message;
     }
@@ -46,7 +52,7 @@ interface VideoState {
   loading: 'idle' | 'pending' | 'successfull' | 'failed' | 'fulfilled'
   actualPage: number;
   totalPage: number;
-  search_value: string;
+  search_value?: string;
 }
 
 const initialState = {
@@ -76,8 +82,10 @@ export const videoSlice = createSlice({
       })
       .addCase(fetchAllVideos.fulfilled, (state, action) => {
         if (state.loading === 'pending') {
-          state.loading = 'fulfilled',
-            state.entities = action.payload.videos;
+          state.loading = 'fulfilled';
+          state.entities = action.payload.videos;
+          state.actualPage = action.payload.actualPage;
+          state.totalPage = action.payload.totalPage;
         }
       })
       .addCase(fetchFindVideos.pending, (state, action) => {
