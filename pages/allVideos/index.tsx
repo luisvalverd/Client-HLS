@@ -29,7 +29,7 @@ const AllVideos: NextPage = () => {
     } else {
       setDataVideos({ videos: entities, actualPage, totalPage });
     }
-  }, [])
+  }, [actualPage])
 
   return (
     <div>
