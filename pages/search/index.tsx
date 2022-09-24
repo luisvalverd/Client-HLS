@@ -27,10 +27,6 @@ const Search: NextPage = () => {
     router.push("/");
   }
 
-  if (query_search?.includes("-")) {
-    query_search = query_search.replace("-", " ");
-  }
-
   const fetchVideos = async () => {
     if (entities.length === 0) {
       let response = await axios.post("http://localhost:8000/videos", {
@@ -52,9 +48,14 @@ const Search: NextPage = () => {
   }, [actualPage, totalPage])
 
   return (
-    <div>
-      <div>
-        <p>result for:{query_search}</p>
+    <div className="mt-20">
+      <div className="ml-56">
+        <p >
+          <span className="text-xl font-bold">Results for: </span>
+          <span className="text-xl font-light">
+            {query_search}
+          </span>
+        </p>
       </div>
       <ul>
         <Results videos={dataVideos.videos}></Results>

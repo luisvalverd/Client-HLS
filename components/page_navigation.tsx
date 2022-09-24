@@ -36,7 +36,12 @@ const PageNavigation: React.FC<Props> = (props: Props) => {
     if (props.actualPage < props.lastPage) {
       return (
         <li>
-          <button onClick={() => nextPage()}>next</button>
+          <button
+            className="h-10 w-28 transition-all duration-150 bg-slate-800/70 hover:bg-slate-700/90"
+            onClick={() => nextPage()}
+          >
+            next
+          </button>
         </li>
       )
     }
@@ -46,8 +51,13 @@ const PageNavigation: React.FC<Props> = (props: Props) => {
   const isInitialPage = () => {
     if (props.actualPage > 1) {
       return (
-        <li>
-          <button onClick={() => lastPage()}>last</button>
+        <li className="mr-6">
+          <button
+            className="h-10 w-28 transition-all duration-150 bg-slate-800/70 hover:bg-slate-700/90"
+            onClick={() => lastPage()}
+          >
+            last
+          </button>
         </li>
       )
     }
@@ -55,7 +65,7 @@ const PageNavigation: React.FC<Props> = (props: Props) => {
   }
 
   return (
-    <div>
+    <div className="my-10 flex justify-center">
       <ul>
         {isInitialPage()}
         {isLastPage()}

@@ -32,8 +32,10 @@ const AllVideos: NextPage = () => {
   }, [actualPage])
 
   return (
-    <div>
-      <h2>All videos</h2>
+    <div className="mt-20">
+      <div className="flex justify-center">
+        <h2 className="text-2xl font-bold">All Videos</h2>
+      </div>
       <div>
         <Results videos={dataVideos?.videos}></Results>
       </div>

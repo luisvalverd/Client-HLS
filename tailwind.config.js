@@ -2,7 +2,11 @@
 const colors = require("tailwindcss/colors");
 
 module.exports = {
-  content: ['./src/**/*.{js,jsx,ts,tsx}'],
+  content: [
+    './pages/**/*.{js,jsx,ts,tsx}',
+    './components/**/*.{js,jsx,ts,tsx}'
+  ],
+  darkMode: false,
   theme: {
     colors: {
       transparent: "transparent",
@@ -21,13 +25,16 @@ module.exports = {
       purple: colors.purple,
       pink: colors.pink,
       rose: colors.rose,
+      slate: colors.slate,
     },
     extend: {
-      spacing: {
-        0: "0px",
-        1: '0.25rem',
+      transitionDuration: {
+        '0': '0ms',
+        '1000': '1000ms',
       }
     },
+    backgroundColor: (theme) => theme("colors"),
+
   },
   plugins: [],
 }

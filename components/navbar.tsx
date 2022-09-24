@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import styles from "../styles/Navbar.module.css";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
 // redux
 import { fetchFindVideos } from "../store/slices/videos";
 import { useDispatch } from "react-redux";
+
+// TODO: make user config login register and logout
 
 const Navbar: React.FC = () => {
   const [valueSearch, setValueSearch] = useState<any>();
@@ -19,9 +20,13 @@ const Navbar: React.FC = () => {
   }
 
   const search = (value: string) => {
-    let query = value;
     dispatch(fetchFindVideos({ name: valueSearch, page: "1" }));
-    router.push(`/search?query_search=${query.replace(" ", "-")}`);
+    router.push({
+      pathname: "/search",
+      query: {
+        query_search: value
+      }
+    })
   }
 
   const handleSearch = (event: any) => {
@@ -29,19 +34,28 @@ const Navbar: React.FC = () => {
   }
 
   return (
-    <div className={styles.navbar}>
+    <div className="h-full flex justify-between px-10 items-center">
       <div>
-        <Link href="/">VodTube</Link>
+        <Link href="/">
+          <span className="text-2xl font-bold cursor-pointer">
+            VodTube
+          </span>
+        </Link>
       </div>
-      <div>
+      <div className="w-2/6 h-10">
         <input
           type="text"
+          className="px-4 h-full w-5/6 bg-slate-800/70 transition-all duration-150 focus:bg-slate-800 hover:bg-slate-800 outline-none"
           placeholder="Search..."
           onChange={handleSearch}
           value={valueSearch}
           onKeyPress={pressEnter}
         />
         <button
+          className="backdrop-blur h-full bg-sky-400/20 w-20 transition-all duration-100 ease-in-out
+          focus:outline focus:outline-offset-2 focus:outline-1 focus:outline-sky-400
+          hover:bg-sky-400/50
+          "
           onClick={() => {
             if (valueSearch !== undefined) {
               search(valueSearch)

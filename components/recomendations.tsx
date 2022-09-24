@@ -1,15 +1,10 @@
 import React from "react";
+
+// next
 import Link from "next/link";
 import Image from "next/image";
 
-export interface Videos {
-  id_video: string;
-  title: string;
-  description: string;
-  path_video?: string;
-  path_stream?: string;
-  path_image?: string;
-}
+import { Videos } from "./results_videos";
 
 interface Props {
   videos: Videos[];
@@ -21,7 +16,8 @@ interface Loader {
   quality?: number;
 }
 
-const Results: React.FC<Props> = (props: Props) => {
+// TODO: make get more recomendations on click btn
+const Recomendations: React.FC<Props> = (props: Props) => {
 
   const listVideos = props.videos;
 
@@ -37,21 +33,22 @@ const Results: React.FC<Props> = (props: Props) => {
     return `http://localhost:8000/${data.src}`
   }
 
+
   const itemsVideos = listVideos.map((item) => {
     return (
-      <li key={item.id_video} className="mx-56 my-10 h-56 flex justify-center items-center">
+      <li key={item.id_video} className="my-5 h-32 flex justify-center items-center">
         <Link href={{
           pathname: '/watch',
           query: { idVideo: item.id_video }
         }}>
           <div className="flex flex-row items-center cursor-pointer w-full h-full transition-all duration-150 hover:bg-slate-800/30">
-            <div className="mr-16 h-full flex items-center">
+            <div className="mr-6 h-full flex items-center">
               <Image
                 loader={imgLoader}
                 alt="image"
                 src={`${item.path_image}`}
-                width={340}
-                height={220}
+                width={220}
+                height={120}
               ></Image>
             </div>
             <div>
@@ -65,12 +62,15 @@ const Results: React.FC<Props> = (props: Props) => {
   })
 
   return (
-    <div>
+    <div className="mb-16">
       <ul>
         {itemsVideos}
+        <li>
+          <button className="w-full bg-slate-800/70 h-12 rounded-lg hover:bg-slate-700/90">Show More</button>
+        </li>
       </ul>
     </div>
   )
 }
 
-export default Results;
+export default Recomendations;
