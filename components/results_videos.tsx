@@ -54,9 +54,9 @@ const Results: React.FC<Props> = (props: Props) => {
                 height={220}
               ></Image>
             </div>
-            <div>
-              <h2 >{item.title}</h2>
-              <p>{item.description}</p>
+            <div className="h-full mt-5">
+              <h2 className="text-xl fond-bold">{item.title}</h2>
+              <p className="text-xs text-gray-300/70 font-medium mt-2">{item.description}</p>
             </div>
           </div>
         </Link>

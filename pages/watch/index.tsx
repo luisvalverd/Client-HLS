@@ -1,6 +1,7 @@
 import type { NextPage, NextPageContext } from "next";
 
 import axios from "axios";
+import FileDownload from "js-file-download";
 
 // components
 import { LionPlayer } from "lion-player";
@@ -26,6 +27,22 @@ interface Props {
 
 const Watch: NextPage<Props> = ({ video, recomendations }) => {
 
+  const downloadVideo = (fileUrl: string) => {
+
+    try {
+      axios({
+        method: 'GET',
+        url: fileUrl,
+        responseType: 'blob',
+      }).then((res) => {
+        FileDownload(res.data, "video.mp4");
+      })
+
+    } catch (error: any) {
+      console.log(error.message);
+    }
+  }
+
   return (
     <div className="mt-24 flex flex-row">
       <div className="basis-4/6">
@@ -45,7 +62,12 @@ const Watch: NextPage<Props> = ({ video, recomendations }) => {
             </div>
           </li>
           <li className="mt-5 ml-20">
-            <button className="bg-slate-700/50 w-28 cursor-pointer h-10 transition-all duration-150 hover:bg-slate-700/80">download</button>
+            <button
+              className="bg-slate-700/50 w-28 cursor-pointer h-10 transition-all duration-150 hover:bg-slate-700/80"
+              onClick={() => downloadVideo(`http://localhost:8000/${video?.path_video}`)}
+            >
+              download
+            </button>
           </li>
         </ul>
       </div>

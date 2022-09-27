@@ -3,6 +3,7 @@ import React from "react";
 // next
 import Link from "next/link";
 import Image from "next/image";
+import { useRouter } from "next/router";
 
 import { Videos } from "./results_videos";
 
@@ -18,6 +19,7 @@ interface Loader {
 
 // TODO: make get more recomendations on click btn
 const Recomendations: React.FC<Props> = (props: Props) => {
+  const router = useRouter();
 
   const listVideos = props.videos;
 
@@ -31,6 +33,10 @@ const Recomendations: React.FC<Props> = (props: Props) => {
 
   const imgLoader = (data: Loader) => {
     return `http://localhost:8000/${data.src}`
+  }
+
+  const getAllVideos = () => {
+    router.push('/allVideos');
   }
 
 
@@ -51,9 +57,9 @@ const Recomendations: React.FC<Props> = (props: Props) => {
                 height={120}
               ></Image>
             </div>
-            <div>
-              <h2 >{item.title}</h2>
-              <p>{item.description}</p>
+            <div className="h-full w-2/4">
+              <h2 className="text-xl font-bold">{item.title}</h2>
+              <p className="text-xs text-gray-300/70 font-light">{item.description}</p>
             </div>
           </div>
         </Link>
@@ -66,7 +72,7 @@ const Recomendations: React.FC<Props> = (props: Props) => {
       <ul>
         {itemsVideos}
         <li>
-          <button className="w-full bg-slate-800/70 h-12 rounded-lg hover:bg-slate-700/90">Show More</button>
+          <button onClick={() => getAllVideos()} className="w-full bg-slate-800/70 h-12 rounded-lg hover:bg-slate-700/90">Show More</button>
         </li>
       </ul>
     </div>

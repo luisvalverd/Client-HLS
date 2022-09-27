@@ -35,7 +35,7 @@ const Home: NextPage<Props> = ({ videos }) => {
   return (
     <div className="bg-slate-900">
 
-      <main className="mt-14">
+      <main className="mt-20">
         <h1 className={styles.title}>
           Welcome to <a href="#">VodTube!</a>
         </h1>
