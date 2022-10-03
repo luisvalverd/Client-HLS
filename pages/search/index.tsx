@@ -1,52 +1,59 @@
-import type { NextPage } from "next";
+import type { NextPage, NextPageContext } from "next";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+//import { useEffect, useState } from "react";
 import axios from "axios";
-
-// redux
-import { useSelector } from "react-redux";
 
 // components
 import Results from "../../components/results_videos";
 import PageNavigation from "../../components/page_navigation";
 
-const Search: NextPage = () => {
-  const [dataVideos, setDataVideos] = useState({
-    videos: [],
-    totalPage: 1,
-    actualPages: 1,
-    query_search: ""
-  });
+// interfaces
+import { Video } from "../../interfaces";
+
+interface Props {
+  totalPages: number;
+  actualPage: number;
+  videos: Video[];
+  query_search: string;
+}
+
+const Search: NextPage<Props> = ({ totalPages, actualPage, videos, query_search }) => {
+  /*
+    const [dataVideos, setDataVideos] = useState({
+      videos: [],
+      totalPage: 1,
+      actualPages: 1,
+      query_search: ""
+    });
+    var query_search: any = router.query.query_search;
+    const { entities, totalPage, actualPage, search_value } = useSelector((state: any) => state.videos);
+  */
 
   const router = useRouter();
-  var query_search: any = router.query.query_search;
-  const { entities, totalPage, actualPage, search_value } = useSelector((state: any) => state.videos);
-
-
   if (query_search === "") {
     router.push("/");
   }
-
-  const fetchVideos = async () => {
-    if (entities.length === 0) {
-      let response = await axios.post("http://localhost:8000/videos", {
-        search_value: query_search,
-      })
-      setDataVideos(response.data)
-    } else {
-      setDataVideos({
-        videos: entities,
-        totalPage,
-        actualPages: actualPage,
-        query_search: search_value
-      });
+  /*
+    const fetchVideos = async () => {
+      if (entities.length === 0) {
+        let response = await axios.post("http://localhost:8000/videos", {
+          search_value: query_search,
+        })
+        setDataVideos(response.data)
+      } else {
+        setDataVideos({
+          videos: entities,
+          totalPage,
+          actualPages: actualPage,
+          query_search: search_value
+        });
+      }
     }
-  }
-
-  useEffect(() => {
-    fetchVideos()
-  }, [actualPage, totalPage])
-
+  
+    useEffect(() => {
+      fetchVideos()
+    }, [actualPage, totalPage])
+  */
   return (
     <div className="mt-20">
       <div className="ml-56">
@@ -58,17 +65,42 @@ const Search: NextPage = () => {
         </p>
       </div>
       <ul>
-        <Results videos={dataVideos.videos}></Results>
+        <Results videos={videos}></Results>
       </ul>
       <div>
         <PageNavigation
           allVideos={false}
-          search_query={query_search}
-          actualPage={dataVideos.actualPages}
-          lastPage={dataVideos.totalPage}></PageNavigation>
+          query_search={query_search}
+          actualPage={actualPage}
+          totalPages={totalPages}
+          url={"/search"}
+        ></PageNavigation>
       </div>
     </div>
   )
+}
+
+interface Context extends NextPageContext {
+  query: {
+    query_search: string;
+    page: string;
+  }
+}
+
+Search.getInitialProps = async (ctx: Context) => {
+  var { query_search, page } = ctx.query;
+  if (!page) {
+    page = "1"
+  }
+  const response = await axios.post(`http://localhost:8000/videos?page=${page}`, {
+    search_value: query_search,
+  });
+  return {
+    totalPages: response.data.totalPages,
+    actualPage: response.data.actualPage,
+    videos: response.data.videos,
+    query_search: query_search,
+  };
 }
 
 export default Search;

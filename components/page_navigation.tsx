@@ -1,39 +1,84 @@
 import React from "react";
-
-// redux 
-import { fetchFindVideos, fetchAllVideos } from "../store/slices/videos";
-import { useDispatch } from "react-redux";
+import { useRouter } from "next/router";
 
 interface Props {
   actualPage: number;
-  lastPage: number;
-  search_query: string;
+  totalPages: number;
+  query_search?: string;
+  nameCategory?: string;
+  url: string;
   allVideos?: boolean;
 }
 
 const PageNavigation: React.FC<Props> = (props: Props) => {
+  const router = useRouter();
 
-  const dispatch = useDispatch();
   //change page
   const nextPage = () => {
-    if (!props.allVideos) {
-      dispatch(fetchFindVideos({ name: props.search_query, page: props.actualPage + 1 }))
-    } else {
-      dispatch(fetchAllVideos(props.actualPage + 1));
+    if (!props.nameCategory || props.nameCategory === "" && !props.allVideos) {
+      router.push({
+        pathname: props.url,
+        query: {
+          query_search: props.query_search,
+          page: props.actualPage + 1,
+        }
+      });
+    }
+
+    if (!props.query_search || props.query_search === "" && !props.allVideos) {
+      router.push({
+        pathname: props.url,
+        query: {
+          nameCategory: props.nameCategory,
+          page: props.actualPage + 1,
+        }
+      });
+    }
+
+    if (props.allVideos) {
+      router.push({
+        pathname: props.url,
+        query: {
+          page: props.actualPage + 1,
+        }
+      })
     }
   }
 
   const lastPage = () => {
-    if (!props.allVideos) {
-      dispatch(fetchFindVideos({ name: props.search_query, page: props.actualPage - 1 }))
-    } else {
-      dispatch(fetchAllVideos(props.actualPage - 1));
+    if (!props.nameCategory || props.nameCategory === "" && !props.allVideos) {
+      router.push({
+        pathname: props.url,
+        query: {
+          query_search: props.query_search,
+          page: props.actualPage - 1,
+        }
+      });
+    }
+
+    if (!props.query_search || props.query_search === "" && !props.allVideos) {
+      router.push({
+        pathname: props.url,
+        query: {
+          nameCategory: props.nameCategory,
+          page: props.actualPage - 1,
+        }
+      });
+    }
+
+    if (props.allVideos) {
+      router.push({
+        pathname: props.url,
+        query: {
+          page: props.actualPage - 1,
+        }
+      })
     }
   }
 
   // validate if need next or last btn to change page
   const isLastPage = () => {
-    if (props.actualPage < props.lastPage) {
+    if (props.actualPage < props.totalPages) {
       return (
         <li>
           <button
@@ -66,7 +111,7 @@ const PageNavigation: React.FC<Props> = (props: Props) => {
 
   return (
     <div className="my-10 flex justify-center">
-      <ul>
+      <ul className="flex flex-row">
         {isInitialPage()}
         {isLastPage()}
       </ul>

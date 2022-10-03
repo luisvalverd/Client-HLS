@@ -11,7 +11,9 @@ import { fetchAllVideos } from "../store/slices/videos";
 
 // components
 import Results from '../components/results_videos';
-import { Videos } from "../components/results_videos";
+
+// interfaces
+import { Video } from "../interfaces";
 
 // styles
 import styles from '../styles/Home.module.css'
@@ -19,7 +21,7 @@ import styles from '../styles/Home.module.css'
 interface Props {
   actualPage: number;
   totalPage: number;
-  videos: Videos[];
+  videos: Video[];
 }
 
 const Home: NextPage<Props> = ({ videos }) => {

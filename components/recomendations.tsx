@@ -5,10 +5,10 @@ import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/router";
 
-import { Videos } from "./results_videos";
+import { Video } from "../interfaces";
 
 interface Props {
-  videos: Videos[];
+  videos: Video[];
 }
 
 interface Loader {

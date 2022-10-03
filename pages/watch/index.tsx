@@ -6,23 +6,16 @@ import FileDownload from "js-file-download";
 // components
 import { LionPlayer } from "lion-player";
 import Recomendations from "../../components/recomendations";
-import { Videos } from "../../components/results_videos";
+
+// interfaces
+import { Video } from "../../interfaces";
 
 // styles
 import 'lion-player/dist/lion-skin.min.css'
 
-interface Video {
-  id_video?: string;
-  path_stream: string;
-  path_video: string;
-  path_image: string;
-  title: string;
-  description: string;
-}
-
 interface Props {
   video?: Video;
-  recomendations: Videos[]
+  recomendations: Video[]
 }
 
 const Watch: NextPage<Props> = ({ video, recomendations }) => {
